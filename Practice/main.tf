@@ -78,6 +78,8 @@ resource "aws_security_group" "created_SG" {
     }
   
 }
+
+#created and EC2 instance
 resource "aws_instance" "create_EC2" {
     tags = {
       Name ="EC2_1"
@@ -90,3 +92,33 @@ resource "aws_instance" "create_EC2" {
   
 }
 
+
+
+#HomeWork to create NAT
+
+#Create NAT 
+resource "aws_nat_gateway" "created_NAT" {
+    subnet_id = aws_subnet.created_subnet_public.id
+    connectivity_type = "public"
+
+    depends_on = [ aws_internet_gateway.created_IG ]
+    tags = {
+      Name = "Nat-1"
+    }
+}
+
+#created a RT for bastion host
+resource "aws_route_table" "RT_FOR_PRIVATE" {
+    vpc_id = aws_vpc.created_vpc.id
+    route {
+        gateway_id = aws_nat_gateway.created_NAT.id
+        cidr_block = "0.0.0.0/0"
+    }
+}
+
+# Route to NAT to privat
+
+resource "aws_route_table_association" "NAT_TO_PRIVATE" {
+    subnet_id = aws_subnet.created_subnet_private.id
+    route_table_id = aws_route_table.RT_FOR_PRIVATE.id
+}
