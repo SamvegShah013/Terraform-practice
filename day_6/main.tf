@@ -7,10 +7,4 @@ resource "aws_instance" "EC2" {
   tags = {
     Name = "EC2_1"
   }
-
-
-#prevents from destroys 
-#   lifecycle {
-#     prevent_destroy = true
-#   }
 }
