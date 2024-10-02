@@ -4,13 +4,15 @@ resource "aws_instance" "EC2" {
     key_name = "Linux"
 }
 
+
 resource "aws_s3_bucket" "dependent" {
     bucket = "bucket-name"
   
 }
 
+
 #To createt and destroy specific resources in terraform use following commands:
 #terraform apply --target=aws_s3_bucket.dependent
 #terraform destroy --target=aws_s3_bucket.dependent
 
-#this will only create s3 bucket an not the aws_instance
+#this will only create s3 bucket an not the aws_instance 
